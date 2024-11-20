@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipos de la Liga Pro Ecuador</title>
+    <style>
+        /* Estilos básicos */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, rgba(2, 35, 135, 0.9), rgba(255, 87, 34, 0.9)), url('https://www.example.com/football-stadium-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            color: #ffffff;
+            text-align: center;
+            padding-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #ffcc00;
+            margin-top: 15px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+
+        .container {
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* Estilos del sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 80px;
+            background-color: #333;
+            overflow-x: hidden;
+            transition: width 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar.expanded {
+            width: 220px;
+        }
+
+        /* Estilo para el ícono del perfil */
+        .sidebar img.profile-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-bottom: 2px;
+            transition: transform 0.3s;
+        }
+
+        .sidebar img.profile-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Estilo para el enlace de Editar Usuario */
+        .edit-user-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .edit-user-link:hover {
+            color: #ffcc00;
+        }
+
+        /* Icono de Editar Usuario */
+        .edit-icon {
+            width: 24px; /* Tamaño del icono */
+            height: 24px;
+            transition: transform 0.3s;
+        }
+
+        .sidebar.expanded .edit-icon {
+            transform: scale(1.1);
+        }
+
+        /* Texto de Editar Usuario, oculto por defecto */
+        .edit-text {
+            display: none;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        /* Statics Sidebar Link */
+        .statistics-link {
+            display: flex;
+            align-items: center; /* Vertically aligns icon and text */
+            justify-content: flex-start;
+            padding: 10px;
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .statistics-link:hover {
+            color: #ffcc00; /* Change color on hover */
+        }
+
+        .statistics-icon {
+            width: 24px; /* Adjust icon size */
+            height: auto; /* Maintain aspect ratio */
+            margin-right: 10px; /* Space between icon and text */
+            vertical-align: middle; /* Ensure the image is vertically aligned */
+        }
+
+        .statistics-text {
+            font-size: 20px; /* Adjust text size */
+            font-weight: bold;
+            line-height: 1; /* Ensure text aligns vertically with the icon */
+        }
+
+
+        /* Mostrar el texto cuando el sidebar está expandido */
+        .sidebar.expanded .edit-text {
+            display: inline;
+        }
+
+
+        /* Contenido del sidebar expandido */
+        .sidebar-content {
+            display: none;
+            color: #fff;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .sidebar.expanded .sidebar-content {
+            display: block;
+            margin-top: 20px;
+        }
+
+        .sidebar-content p {
+            margin: 0;
+        }
+
+        .sidebar-content a {
+            color: #bbb;
+            text-decoration: none;
+            display: block;
+            margin: 15px 0;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .sidebar-content a:hover {
+            color: #ffcc00;
+        }
+
+        /* Sección de Cerrar Sesión */
+        .logout-section {
+            margin-top: auto;
+            padding: 20px 0;
+            transition: background 0.3s;
+        }
+
+        .logout-section a {
+            color: #bbb;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .logout-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+
+        .logout-text {
+            display: none; /* Oculto por defecto */
+        }
+
+        .logout-icon {
+            width: 40px; /* Aumenta el tamaño */
+            height: 40px;
+            margin-right: 8px;
+        }
+
+        .logout-section {
+            margin-top: auto; /* Mantiene la sección al final */
+            padding: 20px 0; /* Añade espacio arriba y abajo */
+            position: relative; /* Cambia a relativo */
+            bottom: 20px; /*  20px hacia arriba desde la parte inferior */
+        }
+
+
+
+        .sidebar.expanded .logout-text {
+            display: inline; /* Visible cuando el sidebar está expandido */
+        }
+
+        .logout-section a:hover {
+            color: #ffcc00;
+        }
+
+        /* Estilo del logo de la página */
+        .page-logo {
+            width: 220px;
+            height: auto;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+
+        .page-logo:hover {
+            transform: scale(1.1);
+        }
+
+        /* Estilo de la tabla */
+        table {
+            width: 90%;
+            margin: 40px auto;
+            border-collapse: collapse;
+            background-color: rgba(0, 0, 0, 0.8);
+            margin-top: 50px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+        }
+
+        th {
+            background-color: #ffcc00;
+            color: #000;
+            padding: 15px;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-bottom: 2px solid #333;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #fff;
+            font-size: 1em;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.01);
+            transition: transform 0.3s;
+        }
+
+        .team-logo {
+            width: 80px;
+            height: auto;
+            vertical-align: middle;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .team-logo:hover {
+            transform: scale(1.1);
+        }
+
+        /* Contenido principal */
+        .main-content {
+            margin-left: 80px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        .main-content.expanded {
+            margin-left: 220px;
+        }
+
+        .btn-results {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ffcc00;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn-results:hover {
+            background-color: #e6b800;
+            transform: scale(1.05);
+            color: #000;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            table {
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+   
+    </head>
+    <body>
+
+              <!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <img src="{{ url_for('static', filename='logos/user.png') }}" alt="User Icon" class="profile-icon" onclick="toggleSidebar()">
+    
+    <div class="sidebar-content">
+        <p>{{ usuario }}</p>
+        
+        <!-- Contenedor para el icono de Editar Usuario -->
+        <a href="{{ url_for('editar') }}" class="edit-user-link">
+            <img src="{{ url_for('static', filename='logos/edit-user.png') }}" alt="Editar Usuario Icono" class="edit-icon">
+            <span class="edit-text">Editar Usuario</span>
+        </a>
+
+        <!-- New link for Estadísticas (Statistics Page) -->
+        <a href="{{ url_for('statics') }}" class="statistics-link">
+            <img src="{{ url_for('static', filename='logos/estadisticas.png') }}" alt="Estadísticas Icono" class="statistics-icon">
+            <span class="statistics-text">Estadísticas</span>
+        </a>
+
+    </div>
+    
+    <!-- Contenedor del enlace de Cerrar Sesión -->
+    <div class="logout-section">
+        <a href="{{ url_for('logout') }}">
+            <img src="{{ url_for('static', filename='logos/cerrar-sesion.png') }}" alt="Cerrar Sesión Icono" class="logout-icon">
+            <span class="logout-text">Cerrar Sesión</span>
+        </a>
+    </div>
+</div>
+
+
+    <!-- Contenido principal -->
+    <div class="main-content" id="main-content">
+        <!-- Logo y título -->
+        <img src="{{ url_for('static', filename='logos/logo.png') }}" alt="Logo de la Liga Pro" class="page-logo">
+        <h1>Equipos de la Liga Pro Ecuador</h1>
+
+        <!-- Tabla de equipos -->
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Logo</th>
+                <th>Nombre</th>
+                <th>Detalles</th>
+            </tr>
+            {% for team in teams %}
+            <tr>
+                <td>{{ team['team']['id'] }}</td>
+                <td>
+                    <img src="{{ team['team']['logo'] }}" alt="{{ team['team']['name'] }} Logo" class="team-logo">
+                </td>
+                <td>{{ team['team']['name'] }}</td>
+                <td><a href="{{ url_for('show_team_details', team_id=team['team']['id']) }}" class="btn-results">Ver Resultados</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- JavaScript para la funcionalidad de expansión del sidebar -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            sidebar.classList.toggle('expanded');
+            mainContent.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>
